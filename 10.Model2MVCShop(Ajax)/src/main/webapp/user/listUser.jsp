@@ -60,7 +60,7 @@
 									//Debug...
 									//alert(status);
 									//Debug...
-									//alert("JSONData : \n"+JSONData);
+									alert("JSONData : \n"+JSONData);
 									
 									var displayValue = "<h3>"
 																+"¾ÆÀÌµð : "+JSONData.userId+"<br/>"
