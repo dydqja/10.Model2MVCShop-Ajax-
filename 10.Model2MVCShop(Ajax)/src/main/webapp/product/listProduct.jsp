@@ -113,6 +113,7 @@
 						var prodNo = $(this).children('input').val();
 						var menu = $($(this).children('input')[1]).val();
 						var prodName = $($(this).children('input')[2]).val();
+					
 						//alert
 						if(${menu=='manage'}) {							
 							self.location ="/product/updateProduct?prodNo="+$(this).children('input').val()+"&menu="+$($(this).children('input')[1]).val()
