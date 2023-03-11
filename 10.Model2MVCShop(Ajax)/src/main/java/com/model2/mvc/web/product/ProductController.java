@@ -1,10 +1,13 @@
 package com.model2.mvc.web.product;
 
+import java.io.File;
 import java.util.Map;
+import java.util.UUID;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
+import org.apache.commons.io.FilenameUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.beans.factory.annotation.Value;
@@ -14,6 +17,7 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.multipart.MultipartFile;
 
 import com.model2.mvc.common.Page;
 import com.model2.mvc.common.Search;
@@ -45,8 +49,31 @@ public class ProductController {
 	public String addProduct( @ModelAttribute("product") Product product, Model model, HttpServletRequest request ) throws Exception {
 		
 		System.out.println("/product/addProduct :: POST");
+		
+		//file upload
+		String fileName = null;
+		//upload 한 file의 이름을 가져온다.
+		MultipartFile uploadFile = product.getUploadFile();
+		//upload 한 file의 이름이 empty가 아니라면 true / empty라면 false
+		if (!uploadFile.isEmpty()) {
+			// getOriginalFilename => form에서 직접 지정한 파일명 return
+			String originalFileName = uploadFile.getOriginalFilename();
+			// file 확장자명 구하는작업
+			String ext = FilenameUtils.getExtension(originalFileName);
+			// file 저장위치 설정
+			String filePath = "C:\\work\\fileUpload";
+			// UUID 구하는작업(고유id)
+			UUID uuid = UUID.randomUUID();
+			// 파일이름 = 고유id.확장자
+			fileName = uuid+"."+ext;
+			//transferTo => 업로드 한 파일 data를 지정한 파일에 저장한다.
+			uploadFile.transferTo(new File(filePath+"\\"+fileName));
+		}
+		product.setFileName(fileName);		
+		
 		//Business Logic
 		productService.addProduct(product);
+		
 		//Model 과 View 연결
 		System.out.println(request.getParameter("menu"));
 		model.addAttribute("product",product);
@@ -99,7 +126,29 @@ public class ProductController {
 	@RequestMapping( value="updateProduct", method=RequestMethod.POST)
 	public String updateProduct( @ModelAttribute("product") Product product, HttpServletRequest request) throws Exception {
 		
-		System.out.println("/product/updateProduct :: GET");
+		System.out.println("/product/updateProduct :: POST");
+		
+		//file upload
+				String fileName = null;
+				//upload 한 file의 이름을 가져온다.
+				MultipartFile uploadFile = product.getUploadFile();
+				//upload 한 file의 이름이 empty가 아니라면 true / empty라면 false
+				if (!uploadFile.isEmpty()) {
+					// getOriginalFilename => form에서 직접 지정한 파일명 return
+					String originalFileName = uploadFile.getOriginalFilename();
+					// file 확장자명 구하는작업
+					String ext = FilenameUtils.getExtension(originalFileName);
+					// file 저장위치 설정
+					String filePath = "C:\\work\\fileUpload";
+					// UUID 구하는작업(고유id)
+					UUID uuid = UUID.randomUUID();
+					// 파일이름 = 고유id.확장자
+					fileName = uuid+"."+ext;
+					//transferTo => 업로드 한 파일 data를 지정한 파일에 저장한다.
+					uploadFile.transferTo(new File(filePath+"\\"+fileName));
+				}
+				product.setFileName(fileName);
+		
 		//Business logic
 		productService.updateProduct(product);		
 		
@@ -111,7 +160,7 @@ public class ProductController {
 	@RequestMapping( value="updateProduct", method=RequestMethod.GET)
 	public String updateProduct( @RequestParam("prodNo") int prodNo, Model model, HttpServletRequest request ) throws Exception {
 		
-		System.out.println("/product/updateProduct :: POST");
+		System.out.println("/product/updateProduct :: GET");
 		//Business logic
 		Product product = productService.getProduct(prodNo);
 		//Model 과 View 연결

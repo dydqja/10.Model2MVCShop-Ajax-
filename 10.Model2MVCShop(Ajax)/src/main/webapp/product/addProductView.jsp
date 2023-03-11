@@ -49,7 +49,7 @@
 
 			//document.detailForm.action='/product/addProduct';
 			//document.detailForm.submit();
-			$("form").attr("method","POST").attr("action","/product/addProduct").submit();
+			$("form").attr("method","POST").attr("enctype","multipart/form-data").attr("action","/product/addProduct").submit();
 		}
 		//===========================================//
 		//==> 추가된부분 : "상품등록"  Event 연결
@@ -61,7 +61,7 @@
 				//alert(  $( "td.ct_btn01:contains('등록')" ).html() );
 				fncAddProduct();
 			});
-		//==> 추가된부분 : "취소"  Event 처리 및  연결	
+		//==> 추가된부분 : "취소"  Event 처리 및  연결
 			 $( "td.ct_btn01:contains('취소')" ).on("click" , function() {
 				 $("form")[0].reset();
 			
@@ -81,7 +81,7 @@
 
 <body bgcolor="#ffffff" text="#000000">
 
-<form name="detailForm" >
+<form name="detailForm" method="post" enctype="multipart/form-data">
 
 <table width="100%" height="37" border="0" cellpadding="0"	cellspacing="0">
 	<tr>
@@ -171,7 +171,7 @@
 		<td width="104" class="ct_write">상품이미지</td>
 		<td bgcolor="D6D6D6" width="1"></td>
 		<td class="ct_write01">
-			<input		type="text" name="fileName" class="ct_input_g" 
+			<input		type="file" name="uploadFile" class="ct_input_g" 			
 							style="width: 200px; height: 19px" maxLength="13"/>
 		</td>
 	</tr>
