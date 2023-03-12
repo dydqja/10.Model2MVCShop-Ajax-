@@ -1,6 +1,7 @@
 package com.model2.mvc.service.domain;
 
 import java.sql.Date;
+import java.util.List;
 
 import org.springframework.web.multipart.MultipartFile;
 
@@ -19,8 +20,10 @@ public class Product {
 	private Date regDate;
 	// JSON ==> Domain Object  Binding을 위해 추가된 부분
 	private String regDateString;
-	// fileUpload 추가 부분
+	// fileUpload 추가 부분(단일)
 	private MultipartFile uploadFile;
+	// fileUpload 추가 부분(다중)
+	private List<MultipartFile> uploadFiles;
 	
 	
 	
@@ -99,14 +102,22 @@ public class Product {
 				+ "[prodName]" + prodName + "[prodNo]" + prodNo;
 	}
 	
-	//fileUpload 추가부분
+	//fileUpload 추가부분(단일)
 	public MultipartFile getUploadFile() {		 
 		return uploadFile;
 	}	
 	
 	public void setUploadFile(MultipartFile uploadFile) {
 		this.uploadFile = uploadFile;	
-	}	
+	}
 	
+	//fileUpload 추가부분(다중)
+	public List<MultipartFile> getUploadFiles() {
+		return uploadFiles;
+	}
+
+	public void setUploadFiles(List<MultipartFile> uploadFiles) {
+		this.uploadFiles = uploadFiles;
+	}	
 	
 }

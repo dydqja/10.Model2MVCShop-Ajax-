@@ -1,6 +1,9 @@
 package com.model2.mvc.web.product;
 
 import java.io.File;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.UUID;
 
@@ -52,22 +55,36 @@ public class ProductController {
 		
 		//file upload
 		String fileName = null;
-		//upload 한 file의 이름을 가져온다.
-		MultipartFile uploadFile = product.getUploadFile();
+		//upload 한 file의 이름을 가져온다.		
+		List<MultipartFile> uploadFiles = product.getUploadFiles();
 		//upload 한 file의 이름이 empty가 아니라면 true / empty라면 false
-		if (!uploadFile.isEmpty()) {
-			// getOriginalFilename => form에서 직접 지정한 파일명 return
-			String originalFileName = uploadFile.getOriginalFilename();
-			// file 확장자명 구하는작업
-			String ext = FilenameUtils.getExtension(originalFileName);
+		if (!uploadFiles.isEmpty()) {
+			
+			List<Map<String,String>> fileList = new ArrayList<>();			
 			// file 저장위치 설정
 			String filePath = "C:\\work\\fileUpload";
+			
+			for(int i = 0; i<uploadFiles.size(); i++) {			
+			
+			// getOriginalFilename => form에서 직접 지정한 파일명 return
+			String originalFileName = uploadFiles.get(i).getOriginalFilename();			
+			// file 확장자명 구하는작업
+			String ext = FilenameUtils.getExtension(originalFileName);			
 			// UUID 구하는작업(고유id)
-			UUID uuid = UUID.randomUUID();
+//			UUID uuid = UUID.randomUUID();
 			// 파일이름 = 고유id.확장자
-			fileName = uuid+"."+ext;
+//			fileName = uuid.toString()+"."+ext;
+			fileName = UUID.randomUUID().toString()+"."+ext;
+			//고유id.확장자 map으로 넣기			
+			Map<String,String> map = new HashMap<>();
+			map.put("fileName", fileName);			
+			fileList.add(map);			
+			}			
 			//transferTo => 업로드 한 파일 data를 지정한 파일에 저장한다.
-			uploadFile.transferTo(new File(filePath+"\\"+fileName));
+			for (int i = 0; i<uploadFiles.size(); i++) {
+				
+				uploadFiles.get(i).transferTo(new File(filePath+"\\"+fileList.get(i).get("fileName")));			
+			}
 		}
 		product.setFileName(fileName);		
 		
@@ -129,25 +146,39 @@ public class ProductController {
 		System.out.println("/product/updateProduct :: POST");
 		
 		//file upload
-				String fileName = null;
-				//upload 한 file의 이름을 가져온다.
-				MultipartFile uploadFile = product.getUploadFile();
-				//upload 한 file의 이름이 empty가 아니라면 true / empty라면 false
-				if (!uploadFile.isEmpty()) {
-					// getOriginalFilename => form에서 직접 지정한 파일명 return
-					String originalFileName = uploadFile.getOriginalFilename();
-					// file 확장자명 구하는작업
-					String ext = FilenameUtils.getExtension(originalFileName);
-					// file 저장위치 설정
-					String filePath = "C:\\work\\fileUpload";
-					// UUID 구하는작업(고유id)
-					UUID uuid = UUID.randomUUID();
-					// 파일이름 = 고유id.확장자
-					fileName = uuid+"."+ext;
-					//transferTo => 업로드 한 파일 data를 지정한 파일에 저장한다.
-					uploadFile.transferTo(new File(filePath+"\\"+fileName));
-				}
-				product.setFileName(fileName);
+		String fileName = null;
+		//upload 한 file의 이름을 가져온다.		
+		List<MultipartFile> uploadFiles = product.getUploadFiles();
+		//upload 한 file의 이름이 empty가 아니라면 true / empty라면 false
+		if (!uploadFiles.isEmpty()) {
+					
+			List<Map<String,String>> fileList = new ArrayList<>();			
+			// file 저장위치 설정
+			String filePath = "C:\\work\\fileUpload";
+					
+			for(int i = 0; i<uploadFiles.size(); i++) {			
+					
+			// getOriginalFilename => form에서 직접 지정한 파일명 return
+			String originalFileName = uploadFiles.get(i).getOriginalFilename();			
+			// file 확장자명 구하는작업
+			String ext = FilenameUtils.getExtension(originalFileName);			
+			// UUID 구하는작업(고유id)
+//			UUID uuid = UUID.randomUUID();
+			// 파일이름 = 고유id.확장자
+//			fileName = uuid.toString()+"."+ext;
+			fileName = UUID.randomUUID().toString()+"."+ext;
+			//고유id.확장자 map으로 넣기			
+			Map<String,String> map = new HashMap<>();
+			map.put("fileName", fileName);			
+			fileList.add(map);			
+			}			
+			//transferTo => 업로드 한 파일 data를 지정한 파일에 저장한다.
+			for (int i = 0; i<uploadFiles.size(); i++) {
+						
+				uploadFiles.get(i).transferTo(new File(filePath+"\\"+fileList.get(i).get("fileName")));			
+			}
+		}
+		product.setFileName(fileName);
 		
 		//Business logic
 		productService.updateProduct(product);		
