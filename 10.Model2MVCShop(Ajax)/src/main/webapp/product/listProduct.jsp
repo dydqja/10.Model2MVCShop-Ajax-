@@ -78,8 +78,8 @@
 					fncGetList(${ search.currentPage })		
 			});
 			
-			$("#hidden").on("keydown", function(e) {
-				  if (e.keyCode === 13) {
+			$("#searchBox").on("keydown", function(e) {
+				  if (e.keyCode == 13) {
 					    e.preventDefault();
 					    fncGetList(${ search.currentPage })		
 					  };
@@ -216,7 +216,7 @@
 				<option value="1" ${ ! empty searchCondition && search.searchCondition==1 ? "selected" : "" }>상품코드</option>				
 			</select>
 		<%--<input 	type="text" name="searchKeyword"  value="<%= searchKeyword %>" --%> 
-			<input id="yeon_ho"	type="text" name="searchKeyword" 
+			<input id="searchBox"	type="text" name="searchKeyword" 
 					value="${ ! empty search.searchKeyword ? search.searchKeyword :""}"
 							class="ct_input_g" style="width:200px; height:19px" >
 		</td>	
