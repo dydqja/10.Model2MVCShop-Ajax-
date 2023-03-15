@@ -96,5 +96,13 @@
 						</where>
 					</if> ) countTable
 	 </select>
+	 
+	 <!-- autoComplete 추가부분 -->
+	 <select id="getAutoComplete" parameterType="map" resultType="map">
+	 	SELECT PROD_NAME 
+	 	FROM product 
+	 	WHERE PROD_NAME LIKE '%'||#{value}||'%' 
+	 	ORDER BY PROD_NO
+	 </select>	 
 
 </mapper>

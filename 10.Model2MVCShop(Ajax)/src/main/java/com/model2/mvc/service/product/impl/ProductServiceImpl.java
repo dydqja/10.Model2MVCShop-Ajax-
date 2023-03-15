@@ -65,6 +65,12 @@ public class ProductServiceImpl implements ProductService{
 		System.out.println("product 값은 = "+ product);
 		productDao.updateProduct(product);
 	}
+	
+	//AutoComplete 추가부분
+	public List<Map<String,Object>>autoComplete(Map<String,Object> paramMap) throws Exception {		
+		return productDao.autoComplete(paramMap);
+	}
+	
 	/* #######################################################################################
 	public boolean checkDuplication(String userId) throws Exception {
 		System.out.println("UserServiceImpl에서 checkDuplication 실행됨");

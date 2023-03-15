@@ -1,5 +1,6 @@
 package com.model2.mvc.web.product;
 
+import java.util.List;
 import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
@@ -16,6 +17,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.model2.mvc.common.Page;
@@ -31,7 +33,7 @@ public class ProductRestController {
 	//Field
 	@Autowired
 	@Qualifier("productServiceImpl")
-	private ProductService productService;
+	private ProductService productService;			
 	//setter Method 구현 X
 	
 	public ProductRestController() {
@@ -44,7 +46,7 @@ public class ProductRestController {
 	@Value("#{commonProperties['pageSize']}")
 	int pageSize;	
 	
-	/* 상품등록으로는 ajax 안쓸것같음
+//	 상품등록으로는 ajax 안쓸것같음
 	@RequestMapping( value="json/addProduct", method=RequestMethod.POST)
 	public void addProduct( @RequestBody Product product, Model model, HttpServletRequest request ) throws Exception {
 		
@@ -59,7 +61,7 @@ public class ProductRestController {
 		
 //		return "forward:/product/readProduct.jsp";		
 	}
-	*/
+	
 	
 	@RequestMapping( value="json/getProduct/{prodNo}", method=RequestMethod.GET)
 	public Product getProduct( @PathVariable int prodNo ) throws Exception {
@@ -76,6 +78,19 @@ public class ProductRestController {
 //		return "forward:/product/updateProduct.jsp";
 		return productService.getProduct(prodNo);
 	}
+	
+	//AutoComplete 추가부분
+	@RequestMapping( value="/json/autoComplete", method=RequestMethod.POST)
+	public @ResponseBody Map<String, Object> autoComplete(@RequestParam Map<String, Object> paramMap) throws Exception {
+		
+		System.out.println("/product/json/autoComplete :: POST");
+		
+		List<Map<String,Object>> acList = productService.autoComplete(paramMap);
+		paramMap.put("acList", acList);
+		
+		return paramMap;
+	}
+	
 	/*
 	@RequestMapping("listProduct")
 	public String listProduct( @ModelAttribute("search") Search search, HttpServletRequest request, Model model) throws Exception {

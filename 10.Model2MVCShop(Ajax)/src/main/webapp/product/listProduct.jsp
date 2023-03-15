@@ -52,8 +52,12 @@
 	<title>상품 목록조회</title>
 
 <link rel="stylesheet" href="/css/admin.css" type="text/css">
+<link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css"> <!-- autocomplete 추가 -->
 
 <script src="http://code.jquery.com/jquery-2.1.4.min.js"></script>
+<script src="https://code.jquery.com/jquery-1.12.4.js"></script>	<!-- autocomplete 추가 -->
+<script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>	<!-- autocomplete 추가 -->
+
 <script type="text/javascript">
 
 	//=====기존Code 주석 처리 후  jQuery 변경 ======//
@@ -125,7 +129,7 @@
 										dataType : "json" ,
 										headers : {
 											"Accept" : "application/json" ,
-											"Content-type" : "application/json"
+											"Content-Type" : "application/json"
 										} ,
 										success : function(JSONData , status) {
 											
@@ -161,8 +165,47 @@
 			$("h7").css("color" , "red");
 			
 			$(".ct_list_pop:nth-child(4n+6)" ).css("background-color" , "whitesmoke");
+		});
 			
-	 });
+			
+		//AutoComplete 추가부분
+		$(function() {
+			
+			$('#searchBox').autocomplete({				
+				source : function(request, response) { //source: searchBox에 보일 목록
+					$.ajax({
+						url : "/product/json/autoComplete/" ,
+						type : "POST" ,
+						dataType : "JSON" ,
+						data : {value: request.term} , //입력한 값이 value로 넘어감. Controller 에서 request.getParameter("value")
+						success : function(data) {	   //또는 @RequestParam("value") String value로 값을 꺼낼 수 있음.							
+							response(
+								$.map(data.acList, function(item) { //acList ==> Business Logic 이후 return값 담는 변수. Controller에서 선언
+									return {
+										label : item.PROD_NAME , // 목록에 표시되는 값.
+										value : item.PROD_NAME   // 선택시 value창에 표시되는 값
+										//idx : item.SEQ // index
+									};
+								})									
+							);
+						}
+						,error : function(){
+							alert("error");
+						}
+					});					
+				}
+				,focus : function(event, ui) { // 방향키로 자동완성단어 선택하는 기능
+					return false;
+				}
+				,minLength : 1 //최소 글자수
+				,autoFocus : true // true => 첫번째 항목에 자동으로 초점 맞춰짐
+				,delay : 100 // autocomplete 딜레이 시간(ms)
+				,select : function(evt, ui) { // 아이템 선택시 실행. ui.item 이 선택된 항목을 나타내는 객체,
+											  // lavel,value,idx를 가짐.
+				}			
+			});
+		});
+	 
 
 </script>
 </head>

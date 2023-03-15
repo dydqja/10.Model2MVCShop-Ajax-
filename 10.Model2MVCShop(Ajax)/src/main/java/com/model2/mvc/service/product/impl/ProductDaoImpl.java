@@ -1,6 +1,7 @@
 package com.model2.mvc.service.product.impl;
 
 import java.util.List;
+import java.util.Map;
 
 import org.apache.ibatis.session.SqlSession;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -62,6 +63,12 @@ public class ProductDaoImpl implements ProductDao{
 	public int getTotalCount(Search search) throws Exception {
 		System.out.println("ProductDaoImpl에서 getTotalCount 실행됨");
 		return sqlSession.selectOne("ProductMapper.getTotalCount", search);
+	}
+	
+	//AutoComplete 추가부분
+	public List<Map<String,Object>> autoComplete(Map<String,Object> paramMap) throws Exception {
+		System.out.println("ProductDaoImpl에서 autoComplete 실행됨");		
+		return sqlSession.selectList("ProductMapper.getAutoComplete", paramMap);
 	}
 	
 }
