@@ -62,7 +62,7 @@ public class ProductController {
 			
 			List<Map<String,String>> fileList = new ArrayList<>();			
 			// file 저장위치 설정
-			String filePath = "C:\\work\\fileUpload";
+			String filePath = "C:\\Users\\LG\\git\\10.Model2MVCShop-Ajax-\\10.Model2MVCShop(Ajax)\\src\\main\\webapp\\images\\uploadFiles";
 			
 			for(int i = 0; i<uploadFiles.size(); i++) {			
 			
@@ -100,7 +100,8 @@ public class ProductController {
 	}
 	
 	@RequestMapping( value="getProduct", method=RequestMethod.POST)
-	public String getProduct( @RequestParam("prodNo") int prodNo, Model model, HttpServletRequest request ) throws Exception {
+	public String getProduct( @RequestParam("prodNo") int prodNo, Model model, HttpServletRequest request,
+								@RequestParam("menu") String menu ) throws Exception {
 		
 		System.out.println("/product/getProduct :: POST");
 		//Business Logic
@@ -111,7 +112,7 @@ public class ProductController {
 		model.addAttribute("product",product);		
 		model.addAttribute("menu",request.getParameter("menu"));
 		
-		return "forward:/product/updateProduct.jsp";
+		return "forward:/product/getProduct.jsp";
 	}
 	
 	@RequestMapping( value="listProduct")
@@ -154,7 +155,7 @@ public class ProductController {
 					
 			List<Map<String,String>> fileList = new ArrayList<>();			
 			// file 저장위치 설정
-			String filePath = "C:\\work\\fileUpload";
+			String filePath = "C:\\Users\\LG\\git\\10.Model2MVCShop-Ajax-\\10.Model2MVCShop(Ajax)\\src\\main\\webapp\\images\\uploadFiles";
 					
 			for(int i = 0; i<uploadFiles.size(); i++) {			
 					

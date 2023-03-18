@@ -259,7 +259,7 @@
 				<option value="1" ${ ! empty searchCondition && search.searchCondition==1 ? "selected" : "" }>상품코드</option>				
 			</select>
 		<%--<input 	type="text" name="searchKeyword"  value="<%= searchKeyword %>" --%> 
-			<input id="searchBox"	type="text" name="searchKeyword" 
+			<input id="searchBox" type="text" name="searchKeyword" 
 					value="${ ! empty search.searchKeyword ? search.searchKeyword :""}"
 							class="ct_input_g" style="width:200px; height:19px" >
 		</td>	
